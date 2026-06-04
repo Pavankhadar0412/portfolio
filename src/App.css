@@ -219,6 +219,27 @@ html {
 }
 
 /* Responsive Design */
+@media (max-width: 1200px) {
+  .hero-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 1rem !important;
+  }
+}
+
+@media (max-width: 968px) {
+  .navbar-desktop {
+    display: none !important;
+  }
+  
+  .mobile-menu-btn {
+    display: block !important;
+  }
+  
+  .mobile-menu {
+    display: block !important;
+  }
+}
+
 @media (max-width: 768px) {
   .section {
     padding: 3rem 4%;
@@ -226,6 +247,61 @@ html {
   
   .section-title {
     font-size: 2rem;
+  }
+  
+  .hero-grid {
+    grid-template-columns: 1fr !important;
+    text-align: center !important;
+  }
+  
+  .hero-title {
+    font-size: 2.5rem !important;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem !important;
+  }
+  
+  .hero-description {
+    max-width: 100% !important;
+  }
+  
+  .hero-button {
+    margin: 0 auto !important;
+  }
+  
+  .profile-container {
+    width: 300px !important;
+    height: 300px !important;
+  }
+  
+  .profile-image {
+    width: 250px !important;
+    height: 250px !important;
+  }
+  
+  .profile-decorative {
+    width: 280px !important;
+    height: 280px !important;
+  }
+  
+  .stats-container {
+    order: 3 !important;
+    grid-column: span 1 !important;
+    align-items: center !important;
+  }
+  
+  .stat-card {
+    width: 100% !important;
+    text-align: center !important;
+  }
+  
+  .stat-number {
+    font-size: 2rem !important;
+  }
+  
+  .stat-label {
+    font-size: 0.8rem !important;
   }
   
   .projects-grid {
@@ -291,6 +367,10 @@ html {
     padding: 1.2rem 2rem;
     font-size: 1rem;
   }
+  
+  .navbar-title {
+    font-size: 1.2rem !important;
+  }
 }
 
 @media (max-width: 480px) {
@@ -301,6 +381,29 @@ html {
   .section-title {
     font-size: 1.8rem;
     margin-bottom: 2rem;
+  }
+  
+  .hero-title {
+    font-size: 2rem !important;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.9rem !important;
+  }
+  
+  .profile-container {
+    width: 250px !important;
+    height: 250px !important;
+  }
+  
+  .profile-image {
+    width: 200px !important;
+    height: 200px !important;
+  }
+  
+  .profile-decorative {
+    width: 220px !important;
+    height: 220px !important;
   }
   
   .project-card {
@@ -335,5 +438,9 @@ html {
   
   .timeline-description {
     font-size: 0.85rem;
+  }
+  
+  .navbar-title {
+    font-size: 1rem !important;
   }
 }

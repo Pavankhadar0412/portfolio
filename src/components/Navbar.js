@@ -47,6 +47,7 @@ const Navbar = () => {
         <a 
           href="#home" 
           onClick={(e) => { e.preventDefault(); scrollToSection('home'); }}
+          className="navbar-title"
           style={{
             fontSize: '1.5rem',
             fontWeight: '600',
@@ -60,16 +61,13 @@ const Navbar = () => {
         </a>
 
         {/* Desktop Menu */}
-        <ul style={{
+        <ul className="navbar-desktop" style={{
           display: 'flex',
           listStyle: 'none',
           margin: 0,
           padding: 0,
           gap: '3rem',
-          alignItems: 'center',
-          '@media (max-width: 968px)': {
-            display: 'none'
-          }
+          alignItems: 'center'
         }}>
           <li><a href="#projects" className="navbar-link" onClick={(e) => { e.preventDefault(); scrollToSection('projects'); }} style={{
             color: '#000000',
@@ -99,10 +97,7 @@ const Navbar = () => {
             border: 'none',
             color: '#000000',
             fontSize: '1.5rem',
-            cursor: 'pointer',
-            '@media (max-width: 968px)': {
-              display: 'block'
-            }
+            cursor: 'pointer'
           }}
         >
           {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
@@ -121,10 +116,7 @@ const Navbar = () => {
         backdropFilter: 'blur(10px)',
         zIndex: 1001,
         transition: 'left 0.3s ease',
-        padding: '2rem',
-        '@media (max-width: 968px)': {
-          display: isMobileMenuOpen ? 'block' : 'none'
-        }
+        padding: '2rem'
       }}>
         <button className="close-menu" onClick={() => setIsMobileMenuOpen(false)} style={{
           position: 'absolute',
