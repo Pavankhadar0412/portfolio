@@ -59,6 +59,17 @@ const Navbar = () => {
         >
           Pavan Khadar's Portfolio
         </a>
+        
+        <span className="navbar-mobile-name" style={{
+          display: 'none',
+          fontSize: '1rem',
+          fontWeight: '700',
+          color: '#000000',
+          fontFamily: 'Georgia, serif',
+          letterSpacing: '1px'
+        }}>
+          PAVAN KHADAR
+        </span>
 
         {/* Desktop Menu */}
         <ul className="navbar-desktop" style={{
