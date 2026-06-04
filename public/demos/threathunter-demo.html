@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThreatHunter - Network Security Scanner Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 1000px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .header h1 {
+            color: #1e3c72;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        .status-bar {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .status-item {
+            text-align: center;
+        }
+        
+        .status-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .status-item p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .monitoring-section {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .monitoring-section h2 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .monitoring-controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(30, 60, 114, 0.3);
+        }
+        
+        .btn.danger {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        }
+        
+        .btn.success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+        
+        .interface-select {
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: white;
+        }
+        
+        .threats-section {
+            background: #fff5f5;
+            border: 1px solid #fed7d7;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .threats-section h2 {
+            color: #d63031;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .threat-item {
+            background: white;
+            border: 1px solid #fed7d7;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .threat-info h3 {
+            color: #d63031;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .threat-info p {
+            color: #666;
+            margin-bottom: 0.25rem;
+        }
+        
+        .threat-severity {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .threat-severity.high {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .threat-severity.medium {
+            background: #ffc107;
+            color: #212529;
+        }
+        
+        .threat-severity.low {
+            background: #28a745;
+            color: white;
+        }
+        
+        .traffic-section {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .traffic-section h2 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .traffic-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .traffic-stat {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .traffic-stat h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .traffic-stat p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #28a745, #20c997);
+            transition: width 0.3s ease;
+        }
+        
+        .progress-fill.warning {
+            background: linear-gradient(90deg, #ffc107, #ff9800);
+        }
+        
+        .progress-fill.danger {
+            background: linear-gradient(90deg, #dc3545, #c82333);
+        }
+        
+        .logs-section {
+            background: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 1rem;
+            height: 200px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            color: #00ff00;
+            font-size: 0.9rem;
+        }
+        
+        .logs-section h3 {
+            color: #00ff00;
+            margin-bottom: 1rem;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .log-entry {
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+        
+        .log-entry.warning {
+            color: #ffc107;
+        }
+        
+        .log-entry.error {
+            color: #dc3545;
+        }
+        
+        .log-entry.success {
+            color: #28a745;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .monitoring-active {
+            animation: pulse 2s infinite;
+        }
+        
+        .security-status {
+            text-align: center;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+        
+        .security-status.secure {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .security-status.warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+        }
+        
+        .security-status.danger {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .security-status h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .security-status p {
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>× ThreatHunter</h1>
+            <p>Network Security Scanner with Real-time Threat Detection</p>
+        </div>
+        
+        <div class="security-status secure">
+            <h2>× SECURE</h2>
+            <p>Alert Level: LOW</p>
+        </div>
+        
+        <div class="status-bar">
+            <div class="status-item">
+                <h3 id="packetCount">1,247,892</h3>
+                <p>Packets Analyzed</p>
+            </div>
+            <div class="status-item">
+                <h3 id="threatCount">3</h3>
+                <p>Threats Detected</p>
+            </div>
+            <div class="status-item">
+                <h3 id="anomalyScore">0.08</h3>
+                <p>Anomaly Score</p>
+            </div>
+            <div class="status-item">
+                <h3 id="monitoringTime">00:23:45:12</h3>
+                <p>Monitoring Time</p>
+            </div>
+        </div>
+        
+        <div class="monitoring-section">
+            <h2>Network Monitoring</h2>
+            <div class="monitoring-controls">
+                <select class="interface-select" id="interfaceSelect">
+                    <option value="eth0">eth0 - Ethernet</option>
+                    <option value="wlan0">wlan0 - WiFi</option>
+                    <option value="lo">lo - Loopback</option>
+                </select>
+                <button class="btn success" onclick="startMonitoring()">× Start Monitoring</button>
+                <button class="btn danger" onclick="stopMonitoring()">× Stop Monitoring</button>
+                <button class="btn" onclick="scanNetwork()">× Quick Scan</button>
+            </div>
+        </div>
+        
+        <div class="threats-section">
+            <h2>Recent Threats</h2>
+            <div class="threat-item">
+                <div class="threat-info">
+                    <h3>Suspicious Port Scan</h3>
+                    <p>Source: 192.168.1.105</p>
+                    <p>Target: 192.168.1.100</p>
+                    <p>Time: 12:34:56</p>
+                </div>
+                <div>
+                    <span class="threat-severity medium">MEDIUM</span>
+                    <br><br>
+                    <button class="btn" onclick="blockIP('192.168.1.105')">× Block IP</button>
+                </div>
+            </div>
+            
+            <div class="threat-item">
+                <div class="threat-info">
+                    <h3>DNS Query Anomaly</h3>
+                    <p>Source: 192.168.1.23</p>
+                    <p>Query: suspicious-domain.com</p>
+                    <p>Time: 12:32:14</p>
+                </div>
+                <div>
+                    <span class="threat-severity low">LOW</span>
+                    <br><br>
+                    <button class="btn" onclick="investigateThreat(2)">× Investigate</button>
+                </div>
+            </div>
+            
+            <div class="threat-item">
+                <div class="threat-info">
+                    <h3>Unusual Traffic Pattern</h3>
+                    <p>Source: 192.168.1.78</p>
+                    <p>Type: High-frequency connections</p>
+                    <p>Time: 12:28:45</p>
+                </div>
+                <div>
+                    <span class="threat-severity low">LOW</span>
+                    <br><br>
+                    <button class="btn" onclick="investigateThreat(3)">× Investigate</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="traffic-section">
+            <h2>Traffic Patterns</h2>
+            <div class="traffic-stats">
+                <div class="traffic-stat">
+                    <h3>99.2%</h3>
+                    <p>Normal Traffic</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 99.2%"></div>
+                    </div>
+                </div>
+                <div class="traffic-stat">
+                    <h3>0.8%</h3>
+                    <p>Suspicious Traffic</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill warning" style="width: 0.8%"></div>
+                    </div>
+                </div>
+                <div class="traffic-stat">
+                    <h3>14:00-18:00</h3>
+                    <p>Peak Hours</p>
+                </div>
+                <div class="traffic-stat">
+                    <h3>23%</h3>
+                    <p>Weekend Activity</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="logs-section">
+            <h3>× Security Logs</h3>
+            <div id="logContent">
+                <div class="log-entry success">[2024-04-17 12:34:56] Network monitoring started on eth0</div>
+                <div class="log-entry">[2024-04-17 12:34:57] Analyzing packet patterns...</div>
+                <div class="log-entry">[2024-04-17 12:34:58] Traffic baseline established</div>
+                <div class="log-entry warning">[2024-04-17 12:34:59] Suspicious activity detected from 192.168.1.105</div>
+                <div class="log-entry">[2024-04-17 12:35:00] Port scan identified - ports 1-1024</div>
+                <div class="log-entry success">[2024-04-17 12:35:01] IP 192.168.1.105 blocked successfully</div>
+                <div class="log-entry">[2024-04-17 12:35:02] Continuing network monitoring...</div>
+                <div class="log-entry">[2024-04-17 12:35:03] System resources: CPU 12%, RAM 8%</div>
+                <div class="log-entry">[2024-04-17 12:35:04] Network latency: 2.3ms average</div>
+                <div class="log-entry">[2024-04-17 12:35:05] All systems operational</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let monitoringInterval;
+        let logInterval;
+        let isMonitoring = false;
+        
+        function startMonitoring() {
+            if (isMonitoring) return;
+            
+            isMonitoring = true;
+            const interface = document.getElementById('interfaceSelect').value;
+            
+            addLog(`Network monitoring started on ${interface}`, 'success');
+            
+            // Update monitoring time
+            let seconds = 0;
+            monitoringInterval = setInterval(() => {
+                seconds++;
+                const hours = Math.floor(seconds / 3600);
+                const minutes = Math.floor((seconds % 3600) / 60);
+                const secs = seconds % 60;
+                document.getElementById('monitoringTime').textContent = 
+                    `00:${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            }, 1000);
+            
+            // Update packet count
+            let packets = 1247892;
+            setInterval(() => {
+                packets += Math.floor(Math.random() * 100) + 50;
+                document.getElementById('packetCount').textContent = packets.toLocaleString();
+            }, 2000);
+            
+            // Add periodic logs
+            logInterval = setInterval(() => {
+                const messages = [
+                    'Analyzing packet patterns...',
+                    'Traffic baseline established',
+                    'System resources: CPU ' + (Math.random() * 20 + 5).toFixed(1) + '%, RAM ' + (Math.random() * 15 + 5).toFixed(1) + '%',
+                    'Network latency: ' + (Math.random() * 5 + 1).toFixed(1) + 'ms average',
+                    'All systems operational',
+                    'Continuing network monitoring...'
+                ];
+                const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                addLog(randomMessage);
+            }, 3000);
+        }
+        
+        function stopMonitoring() {
+            if (!isMonitoring) return;
+            
+            isMonitoring = false;
+            clearInterval(monitoringInterval);
+            clearInterval(logInterval);
+            addLog('Network monitoring stopped', 'warning');
+        }
+        
+        function scanNetwork() {
+            addLog('Starting network scan...', 'success');
+            setTimeout(() => {
+                addLog('Scanning network range 192.168.1.0/24...');
+                setTimeout(() => {
+                    addLog('Found 15 active devices', 'success');
+                    addLog('Network scan completed', 'success');
+                }, 2000);
+            }, 1000);
+        }
+        
+        function blockIP(ip) {
+            addLog(`IP ${ip} blocked successfully`, 'success');
+            alert(`IP ${ip} has been blocked and added to firewall rules.`);
+        }
+        
+        function investigateThreat(id) {
+            addLog(`Investigating threat #${id}...`, 'warning');
+            setTimeout(() => {
+                addLog(`Threat #${id} investigation completed - no immediate action required`, 'success');
+            }, 2000);
+        }
+        
+        function addLog(message, type = 'info') {
+            const logContent = document.getElementById('logContent');
+            const timestamp = new Date().toLocaleString();
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry ${type}`;
+            logEntry.textContent = `[${timestamp}] ${message}`;
+            logContent.appendChild(logEntry);
+            logContent.scrollTop = logContent.scrollHeight;
+            
+            // Keep only last 20 logs
+            while (logContent.children.length > 20) {
+                logContent.removeChild(logContent.firstChild);
+            }
+        }
+        
+        // Auto-start monitoring
+        window.onload = () => {
+            setTimeout(() => {
+                startMonitoring();
+            }, 1000);
+        };
+    </script>
+</body>
+</html>

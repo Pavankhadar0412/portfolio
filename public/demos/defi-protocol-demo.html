@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeFi Protocol - Lending Platform Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 900px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .header h1 {
+            color: #667eea;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .stat-card h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-card p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+        
+        .loans-section {
+            margin-bottom: 2rem;
+        }
+        
+        .loans-section h2 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .loan-card {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .loan-info h3 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .loan-info p {
+            color: #666;
+            margin-bottom: 0.25rem;
+        }
+        
+        .loan-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .actions-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .action-card {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .action-card h3 {
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .action-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 500px;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-header h2 {
+            color: #333;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .input-group {
+            margin-bottom: 1rem;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+        }
+        
+        .interest-rate {
+            background: #e8f5e8;
+            border: 1px solid #c3e6c3;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .interest-rate h3 {
+            color: #2d6a2d;
+            margin-bottom: 0.5rem;
+        }
+        
+        .interest-rate p {
+            color: #2d6a2d;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>× DeFi Protocol</h1>
+            <p>Decentralized Lending & Borrowing Platform</p>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>$1,250,000</h3>
+                <p>Total Liquidity</p>
+            </div>
+            <div class="stat-card">
+                <h3>156</h3>
+                <p>Active Loans</p>
+            </div>
+            <div class="stat-card">
+                <h3>8.5%</h3>
+                <p>Average APR</p>
+            </div>
+            <div class="stat-card">
+                <h3>$890,000</h3>
+                <p>Total Borrowed</p>
+            </div>
+        </div>
+        
+        <div class="loans-section">
+            <h2>Your Loans</h2>
+            <div class="loan-card">
+                <div class="loan-info">
+                    <h3>Loan #001</h3>
+                    <p>Amount: 5,000 USDC</p>
+                    <p>Collateral: 7,500 USDC (150%)</p>
+                    <p>Interest Rate: 7.2% APR</p>
+                </div>
+                <div>
+                    <span class="loan-status">ACTIVE</span>
+                    <br><br>
+                    <button class="btn" onclick="repayLoan()">× Repay Now</button>
+                </div>
+            </div>
+            
+            <div class="loan-card">
+                <div class="loan-info">
+                    <h3>Loan #002</h3>
+                    <p>Amount: 2,000 USDC</p>
+                    <p>Collateral: 3,000 USDC (150%)</p>
+                    <p>Interest Rate: 6.8% APR</p>
+                </div>
+                <div>
+                    <span class="loan-status">ACTIVE</span>
+                    <br><br>
+                    <button class="btn" onclick="repayLoan()">× Repay Now</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="interest-rate">
+            <h3>Current Interest Rates</h3>
+            <p>Borrowing APR: 7.2% | Supply APR: 4.8%</p>
+        </div>
+        
+        <div class="actions-section">
+            <div class="action-card" onclick="openModal('deposit')">
+                <h3>× Deposit Collateral</h3>
+                <p>Add USDC as collateral</p>
+            </div>
+            <div class="action-card" onclick="openModal('borrow')">
+                <h3>× Borrow Funds</h3>
+                <p>Borrow against your collateral</p>
+            </div>
+            <div class="action-card" onclick="openModal('market')">
+                <h3>× View Market</h3>
+                <p>Browse available assets</p>
+            </div>
+            <div class="action-card" onclick="openModal('governance')">
+                <h3>× Governance</h3>
+                <p>Participate in protocol decisions</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Deposit Modal -->
+    <div id="depositModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Deposit Collateral</h2>
+                <button class="close-btn" onclick="closeModal('deposit')">×</button>
+            </div>
+            <div class="input-group">
+                <label for="depositAmount">Amount (USDC)</label>
+                <input type="number" id="depositAmount" placeholder="1000">
+            </div>
+            <div class="input-group">
+                <label for="depositWallet">Wallet Address</label>
+                <input type="text" id="depositWallet" placeholder="0x1234567890123456789012345678901234567890">
+            </div>
+            <button class="btn" onclick="deposit()">× Deposit Collateral</button>
+        </div>
+    </div>
+    
+    <!-- Borrow Modal -->
+    <div id="borrowModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Borrow Funds</h2>
+                <button class="close-btn" onclick="closeModal('borrow')">×</button>
+            </div>
+            <div class="input-group">
+                <label for="borrowAmount">Amount (USDC)</label>
+                <input type="number" id="borrowAmount" placeholder="1000">
+            </div>
+            <div class="input-group">
+                <label for="collateralAmount">Collateral Required</label>
+                <input type="number" id="collateralAmount" placeholder="1500" readonly>
+            </div>
+            <div class="input-group">
+                <label for="borrowDuration">Duration (days)</label>
+                <input type="number" id="borrowDuration" placeholder="30">
+            </div>
+            <button class="btn" onclick="borrow()">× Borrow Funds</button>
+        </div>
+    </div>
+    
+    <!-- Market Modal -->
+    <div id="marketModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Market Overview</h2>
+                <button class="close-btn" onclick="closeModal('market')">×</button>
+            </div>
+            <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <h3>USDC Market</h3>
+                <p>Total Supply: $2,500,000</p>
+                <p>Total Borrowed: $890,000</p>
+                <p>Supply APY: 4.8%</p>
+                <p>Borrow APY: 7.2%</p>
+            </div>
+            <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <h3>ETH Market</h3>
+                <p>Total Supply: 1,250 ETH</p>
+                <p>Total Borrowed: 445 ETH</p>
+                <p>Supply APY: 3.2%</p>
+                <p>Borrow APY: 5.8%</p>
+            </div>
+            <button class="btn btn-secondary" onclick="closeModal('market')">× Close</button>
+        </div>
+    </div>
+    
+    <!-- Governance Modal -->
+    <div id="governanceModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Governance</h2>
+                <button class="close-btn" onclick="closeModal('governance')">×</button>
+            </div>
+            <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <h3>Active Proposals</h3>
+                <p><strong>Proposal #001:</strong> Increase supply APY to 5.2%</p>
+                <p>Current Votes: 1,234 FOR / 567 AGAINST</p>
+                <p>Ends in: 2 days, 14 hours</p>
+            </div>
+            <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <h3>Your Voting Power</h3>
+                <p>GOV Tokens: 1,000</p>
+                <p>Voting Power: 1,000</p>
+            </div>
+            <button class="btn" onclick="vote()">× Cast Vote</button>
+        </div>
+    </div>
+    
+    <script>
+        function openModal(modalType) {
+            document.getElementById(modalType + 'Modal').style.display = 'flex';
+        }
+        
+        function closeModal(modalType) {
+            document.getElementById(modalType + 'Modal').style.display = 'none';
+        }
+        
+        function deposit() {
+            const amount = document.getElementById('depositAmount').value;
+            const wallet = document.getElementById('depositWallet').value;
+            
+            if (amount && wallet) {
+                alert(`Successfully deposited ${amount} USDC from ${wallet}`);
+                closeModal('deposit');
+                document.getElementById('depositAmount').value = '';
+                document.getElementById('depositWallet').value = '';
+            } else {
+                alert('Please fill in all fields');
+            }
+        }
+        
+        function borrow() {
+            const amount = document.getElementById('borrowAmount').value;
+            const collateral = document.getElementById('collateralAmount').value;
+            const duration = document.getElementById('borrowDuration').value;
+            
+            if (amount && collateral && duration) {
+                alert(`Successfully borrowed ${amount} USDC for ${duration} days`);
+                closeModal('borrow');
+                document.getElementById('borrowAmount').value = '';
+                document.getElementById('collateralAmount').value = '';
+                document.getElementById('borrowDuration').value = '';
+            } else {
+                alert('Please fill in all fields');
+            }
+        }
+        
+        function repayLoan() {
+            alert('Loan repayment initiated. Please confirm transaction in your wallet.');
+        }
+        
+        function vote() {
+            alert('Vote cast successfully! Thank you for participating in governance.');
+            closeModal('governance');
+        }
+        
+        // Update collateral amount based on borrow amount
+        document.getElementById('borrowAmount').addEventListener('input', function() {
+            const borrowAmount = parseFloat(this.value) || 0;
+            const collateralAmount = (borrowAmount * 1.5).toFixed(2);
+            document.getElementById('collateralAmount').value = collateralAmount;
+        });
+        
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

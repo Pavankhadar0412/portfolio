@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoAnalyzer - Blockchain Forensics Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 1000px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .header h1 {
+            color: #1e3c72;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        .wallet-input {
+            margin-bottom: 2rem;
+        }
+        
+        .input-group {
+            margin-bottom: 1rem;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #1e3c72;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(30, 60, 114, 0.3);
+        }
+        
+        .analysis-results {
+            display: none;
+        }
+        
+        .wallet-overview {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .wallet-overview h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .wallet-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .wallet-stat h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .wallet-stat p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+        
+        .analysis-section {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .analysis-section h2 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .pattern-item {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .pattern-info h3 {
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .pattern-info p {
+            color: #666;
+            margin-bottom: 0.25rem;
+        }
+        
+        .risk-assessment {
+            background: #fff5f5;
+            border: 1px solid #fed7d7;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .risk-assessment h2 {
+            color: #d63031;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .risk-score {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .risk-score h2 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .risk-score p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .risk-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            background: white;
+            border-radius: 6px;
+        }
+        
+        .risk-item.safe {
+            color: #28a745;
+        }
+        
+        .risk-item.warning {
+            color: #ffc107;
+        }
+        
+        .risk-item.danger {
+            color: #dc3545;
+        }
+        
+        .risk-item span {
+            margin-right: 0.5rem;
+        }
+        
+        .recommendations {
+            background: #e8f5e8;
+            border: 1px solid #c3e6c3;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        
+        .recommendations h2 {
+            color: #2d6a2d;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .recommendation-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            color: #2d6a2d;
+        }
+        
+        .recommendation-item span {
+            margin-right: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            display: none;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #1e3c72;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .chart-container {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .chart-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .chart-label {
+            width: 100px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .chart-progress {
+            flex: 1;
+            height: 20px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 0 1rem;
+        }
+        
+        .chart-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+        }
+        
+        .chart-value {
+            font-size: 0.9rem;
+            color: #333;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>× CryptoAnalyzer</h1>
+            <p>Blockchain Forensics & Wallet Analysis</p>
+        </div>
+        
+        <div class="wallet-input">
+            <div class="input-group">
+                <label for="walletAddress">Wallet Address</label>
+                <input type="text" id="walletAddress" placeholder="0x1234567890123456789012345678901234567890" value="0x1234567890123456789012345678901234567890">
+            </div>
+            <button class="btn" onclick="analyzeWallet()">× Analyze Wallet</button>
+        </div>
+        
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Analyzing wallet transactions...</p>
+        </div>
+        
+        <div id="analysisResults" class="analysis-results">
+            <div class="wallet-overview">
+                <h2>Wallet Analysis Overview</h2>
+                <div class="wallet-stats">
+                    <div class="wallet-stat">
+                        <h3>47.892 ETH</h3>
+                        <p>Balance</p>
+                    </div>
+                    <div class="wallet-stat">
+                        <h3>1,247</h3>
+                        <p>Transactions</p>
+                    </div>
+                    <div class="wallet-stat">
+                        <h3>102.3 ETH</h3>
+                        <p>Total Volume</p>
+                    </div>
+                    <div class="wallet-stat">
+                        <h3>3.2/10</h3>
+                        <p>Risk Score</p>
+                    </div>
+                </div>
+                <p>Wallet: 0x1234567890123456789012345678901234567890</p>
+            </div>
+            
+            <div class="analysis-section">
+                <h2>Transaction Patterns</h2>
+                <div class="pattern-item">
+                    <div class="pattern-info">
+                        <h3>Average Transaction Value</h3>
+                        <p>0.082 ETH per transaction</p>
+                        <p>Within normal range for retail users</p>
+                    </div>
+                    <span style="color: #28a745; font-weight: bold;">NORMAL</span>
+                </div>
+                
+                <div class="pattern-item">
+                    <div class="pattern-info">
+                        <h3>Most Active Hours</h3>
+                        <p>14:00-16:00 UTC</p>
+                        <p>Consistent with working hours</p>
+                    </div>
+                    <span style="color: #28a725; font-weight: bold;">NORMAL</span>
+                </div>
+                
+                <div class="pattern-item">
+                    <div class="pattern-info">
+                        <h3>Weekend Activity</h3>
+                        <p>23% of transactions on weekends</p>
+                        <p>Slightly elevated but within normal range</p>
+                    </div>
+                    <span style="color: #ffc107; font-weight: bold;">ELEVATED</span>
+                </div>
+                
+                <div class="pattern-item">
+                    <div class="pattern-info">
+                        <h3>Round Number Transactions</h3>
+                        <p>89% of transactions use round numbers</p>
+                        <p>May indicate automated trading</p>
+                    </div>
+                    <span style="color: #ffc107; font-weight: bold;">FLAGGED</span>
+                </div>
+            </div>
+            
+            <div class="analysis-section">
+                <h2>Activity Distribution</h2>
+                <div class="chart-container">
+                    <div class="chart-bar">
+                        <div class="chart-label">Mon</div>
+                        <div class="chart-progress">
+                            <div class="chart-fill" style="width: 15%"></div>
+                        </div>
+                        <div class="chart-value">15%</div>
+                    </div>
+                    <div class="chart-bar">
+                        <div class="chart-label">Tue</div>
+                        <div class="chart-progress">
+                            <div class="chart-fill" style="width: 18%"></div>
+                        </div>
+                        <div class="chart-value">18%</div>
+                    </div>
+                    <div class="chart-bar">
+                        <div class="chart-label">Wed</div>
+                        <div class="chart-progress">
+                            <div class="chart-fill" style="width: 22%"></div>
+                        </div>
+                        <div class="chart-value">22%</div>
+                    </div>
+                    <div class="chart-bar">
+                        <div class="chart-label">Thu</div>
+                        <div class="chart-progress">
+                            <div class="chart-fill" style="width: 20%"></div>
+                        </div>
+                        <div class="chart-value">20%</div>
+                    </div>
+                    <div class="chart-bar">
+                        <div class="chart-label">Fri</div>
+                        <div class="chart-progress">
+                            <div class="chart-fill" style="width: 12%"></div>
+                        </div>
+                        <div class="chart-value">12%</div>
+                    </div>
+                    <div class="chart-bar">
+                        <div class="chart-label">Sat</div>
+                        <div class="chart-progress">
+                            <div class="chart-fill" style="width: 8%"></div>
+                        </div>
+                        <div class="chart-value">8%</div>
+                    </div>
+                    <div class="chart-bar">
+                        <div class="chart-label">Sun</div>
+                        <div class="chart-progress">
+                            <div class="chart-fill" style="width: 5%"></div>
+                        </div>
+                        <div class="chart-value">5%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="risk-assessment">
+                <h2>Risk Assessment</h2>
+                <div class="risk-score">
+                    <h2 id="riskScore">3.2</h2>
+                    <p id="riskLevel">LOW RISK</p>
+                </div>
+                
+                <div class="risk-item safe">
+                    <span>×</span>
+                    <span>Wallet appears legitimate</span>
+                </div>
+                <div class="risk-item safe">
+                    <span>×</span>
+                    <span>No suspicious patterns detected</span>
+                </div>
+                <div class="risk-item warning">
+                    <span>×</span>
+                    <span>High percentage of round transactions (89%)</span>
+                </div>
+                <div class="risk-item safe">
+                    <span>×</span>
+                    <span>Large transactions detected: 2 (within normal range)</span>
+                </div>
+                <div class="risk-item safe">
+                    <span>×</span>
+                    <span>No mixing services detected</span>
+                </div>
+            </div>
+            
+            <div class="recommendations">
+                <h2>Recommendations</h2>
+                <div class="recommendation-item">
+                    <span>×</span>
+                    <span>Wallet appears legitimate - no immediate action required</span>
+                </div>
+                <div class="recommendation-item">
+                    <span>×</span>
+                    <span>Monitor for unusual activity patterns</span>
+                </div>
+                <div class="recommendation-item">
+                    <span>×</span>
+                    <span>Consider implementing additional monitoring for round transactions</span>
+                </div>
+                <div class="recommendation-item">
+                    <span>×</span>
+                    <span>Regular analysis recommended for ongoing monitoring</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function analyzeWallet() {
+            const walletAddress = document.getElementById('walletAddress').value;
+            
+            if (!walletAddress) {
+                alert('Please enter a wallet address');
+                return;
+            }
+            
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('analysisResults').style.display = 'none';
+            
+            // Simulate analysis
+            setTimeout(() => {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('analysisResults').style.display = 'block';
+                
+                // Generate random risk score
+                const riskScore = (Math.random() * 3 + 2).toFixed(1);
+                document.getElementById('riskScore').textContent = riskScore;
+                
+                // Update risk level
+                let riskLevel = 'LOW RISK';
+                if (riskScore > 5) riskLevel = 'MEDIUM RISK';
+                if (riskScore > 7) riskLevel = 'HIGH RISK';
+                document.getElementById('riskLevel').textContent = riskLevel;
+                
+                // Update risk score color
+                const riskScoreElement = document.querySelector('.risk-score');
+                if (riskScore > 7) {
+                    riskScoreElement.style.background = 'linear-gradient(135deg, #dc3545 0%, #c82333 100%)';
+                } else if (riskScore > 5) {
+                    riskScoreElement.style.background = 'linear-gradient(135deg, #ffc107 0%, #ff9800 100%)';
+                } else {
+                    riskScoreElement.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
+                }
+            }, 2000);
+        }
+        
+        // Auto-analyze on page load
+        window.onload = () => {
+            setTimeout(() => {
+                analyzeWallet();
+            }, 500);
+        };
+    </script>
+</body>
+</html>

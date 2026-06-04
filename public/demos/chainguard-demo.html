@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChainGuard - Smart Contract Auditor Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 800px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .header h1 {
+            color: #1e3c72;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        .contract-input {
+            margin-bottom: 2rem;
+        }
+        
+        .input-group {
+            margin-bottom: 1rem;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #1e3c72;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(30, 60, 114, 0.3);
+        }
+        
+        .analysis-results {
+            display: none;
+        }
+        
+        .report-section {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .report-section h3 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .vulnerability-item {
+            background: #fff5f5;
+            border: 1px solid #fed7d7;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .vulnerability-item.high {
+            background: #fff5f5;
+            border-color: #fc8181;
+        }
+        
+        .vulnerability-item.medium {
+            background: #fffbf0;
+            border-color: #f6e05e;
+        }
+        
+        .vulnerability-item.low {
+            background: #f0fff4;
+            border-color: #68d391;
+        }
+        
+        .risk-score {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .risk-score h2 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .risk-score p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .compliance-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .compliance-item.passed {
+            color: #2d6a2d;
+        }
+        
+        .compliance-item.failed {
+            color: #d63031;
+        }
+        
+        .compliance-item span {
+            margin-right: 0.5rem;
+        }
+        
+        .gas-optimization {
+            background: #e8f4f8;
+            border: 1px solid #bee3f8;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            display: none;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #1e3c72;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>× ChainGuard</h1>
+            <p>Smart Contract Security Auditor</p>
+        </div>
+        
+        <div class="contract-input">
+            <div class="input-group">
+                <label for="contractAddress">Contract Address</label>
+                <input type="text" id="contractAddress" placeholder="0x1234567890123456789012345678901234567890" value="0x1234567890123456789012345678901234567890">
+            </div>
+            <button class="btn" onclick="analyzeContract()">Analyze Contract</button>
+        </div>
+        
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Analyzing contract...</p>
+        </div>
+        
+        <div id="analysisResults" class="analysis-results">
+            <div class="risk-score">
+                <h2 id="riskScore">7.2</h2>
+                <p id="riskLevel">MEDIUM RISK</p>
+            </div>
+            
+            <div class="report-section">
+                <h3>Vulnerabilities Found</h3>
+                <div class="vulnerability-item high">
+                    <div>
+                        <strong>Reentrancy Risk</strong>
+                        <p>External calls before state updates detected</p>
+                    </div>
+                    <span style="color: #d63031; font-weight: bold;">HIGH</span>
+                </div>
+                <div class="vulnerability-item medium">
+                    <div>
+                        <strong>Integer Overflow</strong>
+                        <p>Potential overflow in arithmetic operations</p>
+                    </div>
+                    <span style="color: #f39c12; font-weight: bold;">MEDIUM</span>
+                </div>
+                <div class="vulnerability-item low">
+                    <div>
+                        <strong>Access Control Issue</strong>
+                        <p>Missing modifier on critical function</p>
+                    </div>
+                    <span style="color: #27ae60; font-weight: bold;">LOW</span>
+                </div>
+            </div>
+            
+            <div class="report-section">
+                <h3>Gas Optimization</h3>
+                <div class="gas-optimization">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span>Function 'transfer':</span>
+                        <span>45,000 gas</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span>Function 'approve':</span>
+                        <span>25,000 gas</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span>Function 'transferFrom':</span>
+                        <span>35,000 gas</span>
+                    </div>
+                    <p style="margin-top: 1rem; color: #666;">
+                        <strong>Suggestion:</strong> Optimize loops and use packed structs to reduce gas costs
+                    </p>
+                </div>
+            </div>
+            
+            <div class="report-section">
+                <h3>Compliance Check</h3>
+                <div class="compliance-item passed">
+                    <span>×</span>
+                    <span>ERC20 Standard: PASSED</span>
+                </div>
+                <div class="compliance-item passed">
+                    <span>×</span>
+                    <span>Security Best Practices: PASSED</span>
+                </div>
+                <div class="compliance-item failed">
+                    <span>×</span>
+                    <span>Gas Optimization: NEEDS WORK</span>
+                </div>
+            </div>
+            
+            <div class="report-section">
+                <h3>Recommendation</h3>
+                <p style="color: #d63031; font-weight: bold;">
+                    Fix reentrancy vulnerability before deployment. Use Checks-Effects-Interactions pattern.
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function analyzeContract() {
+            const contractAddress = document.getElementById('contractAddress').value;
+            
+            if (!contractAddress) {
+                alert('Please enter a contract address');
+                return;
+            }
+            
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('analysisResults').style.display = 'none';
+            
+            // Simulate analysis
+            setTimeout(() => {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('analysisResults').style.display = 'block';
+                
+                // Generate random risk score
+                const riskScore = (Math.random() * 4 + 6).toFixed(1);
+                document.getElementById('riskScore').textContent = riskScore;
+                
+                // Update risk level
+                let riskLevel = 'LOW RISK';
+                if (riskScore > 7) riskLevel = 'MEDIUM RISK';
+                if (riskScore > 8.5) riskLevel = 'HIGH RISK';
+                document.getElementById('riskLevel').textContent = riskLevel;
+            }, 2000);
+        }
+        
+        // Auto-analyze on page load
+        window.onload = () => {
+            setTimeout(() => {
+                analyzeContract();
+            }, 500);
+        };
+    </script>
+</body>
+</html>

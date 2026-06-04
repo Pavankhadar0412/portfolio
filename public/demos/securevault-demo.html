@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureVault - Password Manager Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 600px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .header h1 {
+            color: #333;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        .auth-section {
+            margin-bottom: 2rem;
+        }
+        
+        .input-group {
+            margin-bottom: 1rem;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .password-list {
+            margin-bottom: 2rem;
+        }
+        
+        .password-item {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .password-info h4 {
+            color: #333;
+            margin-bottom: 0.25rem;
+        }
+        
+        .password-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .strength-meter {
+            margin-top: 1rem;
+        }
+        
+        .strength-bar {
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+        
+        .strength-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bcf7f);
+            width: 85%;
+            transition: width 0.3s;
+        }
+        
+        .security-features {
+            background: #e8f5e8;
+            border: 1px solid #c3e6c3;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        
+        .security-features h3 {
+            color: #2d6a2d;
+            margin-bottom: 1rem;
+        }
+        
+        .security-features ul {
+            list-style: none;
+        }
+        
+        .security-features li {
+            color: #2d6a2d;
+            margin-bottom: 0.5rem;
+        }
+        
+        .security-features li:before {
+            content: "× ";
+            color: #2d6a2d;
+            font-weight: bold;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>× SecureVault</h1>
+            <p>Enterprise-grade password management system</p>
+        </div>
+        
+        <div id="authSection" class="auth-section">
+            <div class="input-group">
+                <label for="masterKey">Enter Master Key</label>
+                <input type="password" id="masterKey" placeholder="Enter your master key">
+            </div>
+            <button class="btn" onclick="unlockVault()">Unlock Vault</button>
+        </div>
+        
+        <div id="vaultContent" class="hidden">
+            <div class="password-list">
+                <h3>Stored Passwords</h3>
+                <div class="password-item">
+                    <div class="password-info">
+                        <h4>github.com</h4>
+                        <p>Password: ××××××××××××××××××</p>
+                        <p>Strength: Strong (85%)</p>
+                        <p>Last Updated: 2024-04-17</p>
+                    </div>
+                    <div>
+                        <button class="btn" onclick="revealPassword(0)">× Reveal</button>
+                        <button class="btn" onclick="deletePassword(0)">× Delete</button>
+                    </div>
+                </div>
+                
+                <div class="password-item">
+                    <div class="password-info">
+                        <h4>linkedin.com</h4>
+                        <p>Password: ××××××××××××××××××</p>
+                        <p>Strength: Medium (65%)</p>
+                        <p>Last Updated: 2024-04-15</p>
+                    </div>
+                    <div>
+                        <button class="btn" onclick="revealPassword(1)">× Reveal</button>
+                        <button class="btn" onclick="deletePassword(1)">× Delete</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="add-password">
+                <h3>Add New Password</h3>
+                <div class="input-group">
+                    <label for="website">Website</label>
+                    <input type="text" id="website" placeholder="example.com">
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter password" onkeyup="updateStrength()">
+                </div>
+                <div class="strength-meter">
+                    <div class="strength-bar">
+                        <div id="strengthFill" class="strength-fill" style="width: 0%"></div>
+                    </div>
+                    <p id="strengthText">Password Strength: 0%</p>
+                </div>
+                <button class="btn" onclick="savePassword()">× Encrypt & Save</button>
+            </div>
+            
+            <div class="security-features">
+                <h3>Security Features</h3>
+                <ul>
+                    <li>AES-256 Encryption Active</li>
+                    <li>Multi-Factor Authentication Enabled</li>
+                    <li>Breach Detection Monitoring</li>
+                    <li>Auto-Backup to Cloud</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function unlockVault() {
+            const masterKey = document.getElementById('masterKey').value;
+            if (masterKey.length > 0) {
+                document.getElementById('authSection').classList.add('hidden');
+                document.getElementById('vaultContent').classList.remove('hidden');
+            } else {
+                alert('Please enter your master key');
+            }
+        }
+        
+        function revealPassword(index) {
+            const passwords = ['MySecurePassword123!', 'LinkedInPass456*'];
+            const passwordItems = document.querySelectorAll('.password-item');
+            const passwordInfo = passwordItems[index].querySelector('.password-info p');
+            passwordInfo.textContent = `Password: ${passwords[index]}`;
+        }
+        
+        function deletePassword(index) {
+            const passwordItems = document.querySelectorAll('.password-item');
+            passwordItems[index].style.display = 'none';
+        }
+        
+        function updateStrength() {
+            const password = document.getElementById('password').value;
+            let strength = 0;
+            
+            if (password.length >= 8) strength += 20;
+            if (password.length >= 12) strength += 20;
+            if (/[A-Z]/.test(password)) strength += 20;
+            if (/[a-z]/.test(password)) strength += 20;
+            if (/[0-9]/.test(password)) strength += 20;
+            if (/[!@#$%^&*]/.test(password)) strength += 20;
+            
+            document.getElementById('strengthFill').style.width = strength + '%';
+            document.getElementById('strengthText').textContent = `Password Strength: ${strength}%`;
+        }
+        
+        function savePassword() {
+            const website = document.getElementById('website').value;
+            const password = document.getElementById('password').value;
+            
+            if (website && password) {
+                alert(`Password for ${website} saved successfully!`);
+                document.getElementById('website').value = '';
+                document.getElementById('password').value = '';
+                updateStrength();
+            } else {
+                alert('Please fill in all fields');
+            }
+        }
+    </script>
+</body>
+</html>

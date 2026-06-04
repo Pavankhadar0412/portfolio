@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pavan Khadar Bandaru - Portfolio</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Pavan Khadar Bandaru - Cybersecurity & Blockchain Developer Portfolio" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #f1f5f9;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+        
+        .hero-content {
+            z-index: 2;
+            animation: fadeInUp 1s ease-out;
+            max-width: 800px;
+        }
+        
+        .profile-img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 4px solid transparent;
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c);
+            background-clip: padding-box;
+            padding: 4px;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .profile-img:hover {
+            transform: scale(1.05);
+        }
+        
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .name-letter {
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        
+        .name-letter:hover {
+            transform: scale(1.2);
+            color: #60a5fa;
+            text-shadow: 0 0 20px rgba(96, 165, 250, 0.5);
+        }
+        
+        h2 {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            margin-bottom: 2rem;
+        }
+        
+        .linkedin-btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #0077b5 0%, #00a8cc 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        .linkedin-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 119, 181, 0.4);
+        }
+        
+        .section {
+            padding: 5rem 2rem;
+            min-height: 100vh;
+        }
+        
+        .section h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .education-grid, .certifications-grid, .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .card {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(96, 165, 250, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(96, 165, 250, 0.3);
+            border-color: rgba(96, 165, 250, 0.3);
+        }
+        
+        .card h3 {
+            color: #f1f5f9;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .card p {
+            color: #94a3b8;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        
+        .project-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .project-link {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .project-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(96, 165, 250, 0.3);
+        }
+        
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid rgba(96, 165, 250, 0.1);
+        }
+        
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: #60a5fa;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .completed {
+            background: #10b981;
+            color: white;
+        }
+        
+        .in-progress {
+            background: #f59e0b;
+            color: white;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .bg-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(96, 165, 250, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 20%, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+            z-index: 1;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .education-grid, .certifications-grid, .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    
+    <nav class="nav">
+        <div class="nav-content">
+            <div style="color: #60a5fa; font-weight: 700; font-size: 1.5rem;">Pavan Khadar's Portfolio</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#education">Education</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#certifications">Certifications</a></li>
+                <li><a href="#projects">Projects</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <img src="https://via.placeholder.com/200x200/667eea/ffffff?text=PK" alt="Pavan Khadar Bandaru" class="profile-img">
+                <h1>
+                    <span class="name-letter">P</span>
+                    <span class="name-letter">a</span>
+                    <span class="name-letter">v</span>
+                    <span class="name-letter">a</span>
+                    <span class="name-letter">n</span>
+                    <span class="name-letter"> </span>
+                    <span class="name-letter">K</span>
+                    <span class="name-letter">h</span>
+                    <span class="name-letter">a</span>
+                    <span class="name-letter">d</span>
+                    <span class="name-letter">a</span>
+                    <span class="name-letter">r</span>
+                    <span class="name-letter"> </span>
+                    <span class="name-letter">B</span>
+                    <span class="name-letter">a</span>
+                    <span class="name-letter">n</span>
+                    <span class="name-letter">d</span>
+                    <span class="name-letter">a</span>
+                    <span class="name-letter">r</span>
+                    <span class="name-letter">u</span>
+                </h1>
+                <h2>Full Stack Engineer | Cybersecurity & Blockchain Developer</h2>
+                <p style="color: #94a3b8; max-width: 700px; margin: 0 auto 2rem; text-align: center; line-height: 1.8;">
+                    <strong>Full Stack Engineer | April 2026 | Vijayawada</strong><br><br>
+                    Motivated Full Stack Developer with practical experience in building responsive and scalable web applications using modern technologies. Proficient in frontend development with React.js and backend development using Node.js and Express, along with database management using MongoDB. Strong understanding of RESTful APIs, version control (Git), and deployment practices. Experienced in integrating Web3 technologies and developing decentralized applications. Passionate about writing clean, efficient code and continuously learning new tools and frameworks.
+                </p>
+                <a href="https://www.linkedin.com/in/pavankhadar/" target="_blank" class="linkedin-btn">
+                    Connect on LinkedIn
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="education" class="section">
+        <div class="container">
+            <h2>Education</h2>
+            <div class="education-grid">
+                <div class="card">
+                    <h3>Bachelor of Technology in Computer Science</h3>
+                    <p><strong>KL University</strong> | Vijayawada, Andhra Pradesh</p>
+                    <p>2023 - 2027 | CGPA: 9.2/10</p>
+                    <p>Specializing in Computer Science with focus on cybersecurity and blockchain technologies.</p>
+                </div>
+                <div class="card">
+                    <h3>Intermediate (MPC)</h3>
+                    <p><strong>Narayana Junior College</strong> | Andhra Pradesh</p>
+                    <p>2021 - 2023 | CGPA: 9.3/10</p>
+                    <p>Mathematics, Physics, Chemistry foundation for engineering studies.</p>
+                </div>
+                <div class="card">
+                    <h3>10th Class (SSC)</h3>
+                    <p><strong>Sri Chaitanya School</strong> | Darsi, Andhra Pradesh</p>
+                    <p>2020 - 2021 | Marks: 517/600</p>
+                    <p>Secondary education with focus on science and mathematics.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="certifications" class="section">
+        <div class="container">
+            <h2>Certifications</h2>
+            <div class="certifications-grid">
+                <div class="card">
+                    <h3>Certified Junior Web Application Penetration Tester</h3>
+                    <p><strong>eWPT</strong> | 2024</p>
+                    <p>Specialized certification in web application penetration testing, vulnerability assessment, and security testing methodologies.</p>
+                    <span class="status-badge in-progress">Under Process</span>
+                </div>
+                <div class="card">
+                    <h3>Salesforce Certified AI Associate</h3>
+                    <p><strong>Salesforce</strong> | 2024</p>
+                    <p>Professional certification in AI fundamentals, machine learning concepts, and Salesforce AI capabilities.</p>
+                    <span class="status-badge completed">Completed</span>
+                </div>
+                <div class="card">
+                    <h3>AWS Cloud Practitioner CLF-02</h3>
+                    <p><strong>Amazon Web Services</strong> | 2024</p>
+                    <p>Fundamental AWS certification covering cloud concepts, AWS services, security, and billing.</p>
+                    <span class="status-badge in-progress">Under Process</span>
+                </div>
+                <div class="card">
+                    <h3>Microsoft Azure AZ-900</h3>
+                    <p><strong>Microsoft</strong> | 2024</p>
+                    <p>Azure fundamentals certification covering cloud concepts, core Azure services, security, and pricing.</p>
+                    <span class="status-badge in-progress">Under Process</span>
+                </div>
+                <div class="card">
+                    <h3>MongoDB Certification</h3>
+                    <p><strong>MongoDB University</strong> | 2024</p>
+                    <p>Professional certification in MongoDB database administration, development, and cloud services.</p>
+                    <span class="status-badge in-progress">Under Process</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="section">
+        <div class="container">
+            <h2>Featured Projects</h2>
+            <div class="projects-grid">
+                <div class="card">
+                    <h3>🔐 SecureVault - Password Manager</h3>
+                    <p>Enterprise-grade password management system with AES-256 encryption, multi-factor authentication, and secure cloud storage.</p>
+                    <div class="project-links">
+                        <a href="https://github.com/Pavankhadar0412/securevault" target="_blank" class="project-link">
+                            🔗 View Code
+                        </a>
+                        <a href="https://pavan-portfolio-k3b6vhjk0-pavankhadar0412s-projects.vercel.app/demos/securevault-demo.html" target="_blank" class="project-link">
+                            🚀 Live Demo
+                        </a>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>🛡️ ChainGuard - Smart Contract Auditor</h3>
+                    <p>Advanced smart contract security analysis tool with vulnerability detection, gas optimization, and compliance checking.</p>
+                    <div class="project-links">
+                        <a href="https://github.com/Pavankhadar0412/chainguard" target="_blank" class="project-link">
+                            🔗 View Code
+                        </a>
+                        <a href="https://pavan-portfolio-k3b6vhjk0-pavankhadar0412s-projects.vercel.app/demos/chainguard-demo.html" target="_blank" class="project-link">
+                            🚀 Live Demo
+                        </a>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>💰 DeFi Protocol - Lending Platform</h3>
+                    <p>Decentralized lending and borrowing protocol with collateral management, interest rate optimization, and governance features.</p>
+                    <div class="project-links">
+                        <a href="https://github.com/Pavankhadar0412/defi-protocol" target="_blank" class="project-link">
+                            🔗 View Code
+                        </a>
+                        <a href="https://pavan-portfolio-k3b6vhjk0-pavankhadar0412s-projects.vercel.app/demos/defi-protocol-demo.html" target="_blank" class="project-link">
+                            🚀 Live Demo
+                        </a>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>🛡️ ThreatHunter - Network Security Scanner</h3>
+                    <p>Real-time network security monitoring tool with threat detection, traffic analysis, and automated response capabilities.</p>
+                    <div class="project-links">
+                        <a href="https://github.com/Pavankhadar0412/threathunter" target="_blank" class="project-link">
+                            🔗 View Code
+                        </a>
+                        <a href="https://pavan-portfolio-k3b6vhjk0-pavankhadar0412s-projects.vercel.app/demos/threathunter-demo.html" target="_blank" class="project-link">
+                            🚀 Live Demo
+                        </a>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>🎨 NFT Marketplace - Digital Assets Platform</h3>
+                    <p>Decentralized NFT marketplace with smart contracts, IPFS integration, and royalty distribution.</p>
+                    <div class="project-links">
+                        <a href="https://github.com/Pavankhadar0412/nft-marketplace" target="_blank" class="project-link">
+                            🔗 View Code
+                        </a>
+                        <a href="https://pavan-portfolio-k3b6vhjk0-pavankhadar0412s-projects.vercel.app/demos/nft-marketplace-demo.html" target="_blank" class="project-link">
+                            🚀 Live Demo
+                        </a>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>🔍 CryptoAnalyzer - Blockchain Forensics</h3>
+                    <p>Advanced blockchain forensics tool for wallet analysis, transaction pattern detection, and risk assessment.</p>
+                    <div class="project-links">
+                        <a href="https://github.com/Pavankhadar0412/cryptoanalyzer" target="_blank" class="project-link">
+                            🔗 View Code
+                        </a>
+                        <a href="https://pavan-portfolio-k3b6vhjk0-pavankhadar0412s-projects.vercel.app/demos/cryptoanalyzer-demo.html" target="_blank" class="project-link">
+                            🚀 Live Demo
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Navbar background on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.nav');
+            if (window.scrollY > 50) {
+                nav.style.background = 'rgba(15, 23, 42, 0.98)';
+            } else {
+                nav.style.background = 'rgba(15, 23, 42, 0.95)';
+            }
+        });
+    </script>
+</body>
+</html>

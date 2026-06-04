@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Tuition Finder - Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .header h1 {
+            color: #333;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .filter-group select,
+        .filter-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .filter-group select:focus,
+        .filter-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .search-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            align-self: flex-end;
+        }
+        
+        .search-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .tutors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .tutor-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .tutor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+        
+        .tutor-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .tutor-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-right: 1rem;
+        }
+        
+        .tutor-info h3 {
+            color: #333;
+            font-size: 1.2rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .tutor-info .location {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .subjects {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .subject-tag {
+            background: #f0f0f0;
+            color: #333;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .tutor-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding: 1rem 0;
+            border-top: 1px solid #e0e0e0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+        
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .stars {
+            color: #ffc107;
+            font-size: 1rem;
+        }
+        
+        .rating-value {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .tutor-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .availability {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .availability h4 {
+            color: #333;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .time-slots {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .time-slot {
+            background: #e8f5e8;
+            color: #2e7d32;
+            padding: 0.25rem 0.5rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .filters {
+                flex-direction: column;
+            }
+            
+            .search-btn {
+                align-self: stretch;
+            }
+            
+            .tutors-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Home Tuition Finder</h1>
+            <p>Connect with qualified tutors for personalized learning</p>
+        </div>
+        
+        <div class="filters">
+            <div class="filter-group">
+                <label for="subject">Subject</label>
+                <select id="subject">
+                    <option value="">All Subjects</option>
+                    <option value="mathematics">Mathematics</option>
+                    <option value="science">Science</option>
+                    <option value="english">English</option>
+                    <option value="physics">Physics</option>
+                    <option value="chemistry">Chemistry</option>
+                    <option value="biology">Biology</option>
+                    <option value="computer-science">Computer Science</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="location">Location</label>
+                <input type="text" id="location" placeholder="Enter your location">
+            </div>
+            
+            <div class="filter-group">
+                <label for="experience">Experience</label>
+                <select id="experience">
+                    <option value="">Any Experience</option>
+                    <option value="1">1+ Years</option>
+                    <option value="3">3+ Years</option>
+                    <option value="5">5+ Years</option>
+                    <option value="10">10+ Years</option>
+                </select>
+            </div>
+            
+            <button class="search-btn" onclick="searchTutors()">Search Tutors</button>
+        </div>
+        
+        <div class="tutors-grid" id="tutorsGrid">
+            <!-- Tutors will be loaded here -->
+        </div>
+    </div>
+
+    <script>
+        // Sample tutor data
+        const tutors = [
+            {
+                id: 1,
+                name: "Dr. Sarah Johnson",
+                location: "Vijayawada",
+                subjects: ["Mathematics", "Physics"],
+                experience: 8,
+                hourlyRate: 800,
+                rating: 4.8,
+                reviews: 156,
+                students: 89,
+                availability: ["Mon-Fri", "Weekend", "Evening"],
+                avatar: "SJ"
+            },
+            {
+                id: 2,
+                name: "Prof. Michael Chen",
+                location: "Hyderabad",
+                subjects: ["Computer Science", "Mathematics"],
+                experience: 12,
+                hourlyRate: 1200,
+                rating: 4.9,
+                reviews: 203,
+                students: 145,
+                availability: ["Mon-Fri", "Weekend"],
+                avatar: "MC"
+            },
+            {
+                id: 3,
+                name: "Ms. Emily Rodriguez",
+                location: "Vijayawada",
+                subjects: ["English", "Biology"],
+                experience: 6,
+                hourlyRate: 600,
+                rating: 4.7,
+                reviews: 98,
+                students: 67,
+                availability: ["Mon-Fri", "Evening"],
+                avatar: "ER"
+            },
+            {
+                id: 4,
+                name: "Dr. Raj Kumar",
+                location: "Guntur",
+                subjects: ["Chemistry", "Physics"],
+                experience: 10,
+                hourlyRate: 900,
+                rating: 4.6,
+                reviews: 134,
+                students: 102,
+                availability: ["Weekend", "Morning"],
+                avatar: "RK"
+            },
+            {
+                id: 5,
+                name: "Ms. Lisa Anderson",
+                location: "Vijayawada",
+                subjects: ["Science", "Mathematics"],
+                experience: 5,
+                hourlyRate: 700,
+                rating: 4.5,
+                reviews: 87,
+                students: 54,
+                availability: ["Mon-Fri", "Weekend"],
+                avatar: "LA"
+            },
+            {
+                id: 6,
+                name: "Prof. David Kim",
+                location: "Hyderabad",
+                subjects: ["Computer Science", "Physics"],
+                experience: 15,
+                hourlyRate: 1500,
+                rating: 4.9,
+                reviews: 267,
+                students: 198,
+                availability: ["Mon-Fri", "Evening"],
+                avatar: "DK"
+            }
+        ];
+
+        let filteredTutors = [...tutors];
+
+        function renderTutors(tutorsToRender) {
+            const tutorsGrid = document.getElementById('tutorsGrid');
+            
+            if (tutorsToRender.length === 0) {
+                tutorsGrid.innerHTML = '<div class="no-results">No tutors found matching your criteria.</div>';
+                return;
+            }
+            
+            tutorsGrid.innerHTML = tutorsToRender.map(tutor => `
+                <div class="tutor-card">
+                    <div class="tutor-header">
+                        <div class="tutor-avatar">${tutor.avatar}</div>
+                        <div class="tutor-info">
+                            <h3>${tutor.name}</h3>
+                            <div class="location">Location: ${tutor.location}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="subjects">
+                        ${tutor.subjects.map(subject => `<span class="subject-tag">${subject}</span>`).join('')}
+                    </div>
+                    
+                    <div class="tutor-stats">
+                        <div class="stat">
+                            <div class="stat-value">${tutor.experience}</div>
+                            <div class="stat-label">Years Exp</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">Rs${tutor.hourlyRate}</div>
+                            <div class="stat-label">Per Hour</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">${tutor.students}</div>
+                            <div class="stat-label">Students</div>
+                        </div>
+                    </div>
+                    
+                    <div class="rating">
+                        <div class="stars">${generateStars(tutor.rating)}</div>
+                        <div class="rating-value">${tutor.rating} (${tutor.reviews} reviews)</div>
+                    </div>
+                    
+                    <div class="tutor-actions">
+                        <button class="btn btn-primary" onclick="bookTutor(${tutor.id})">Book Now</button>
+                        <button class="btn btn-secondary" onclick="viewProfile(${tutor.id})">View Profile</button>
+                    </div>
+                    
+                    <div class="availability">
+                        <h4>Available:</h4>
+                        <div class="time-slots">
+                            ${tutor.availability.map(slot => `<span class="time-slot">${slot}</span>`).join('')}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function generateStars(rating) {
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 !== 0;
+            let stars = '';
+            
+            for (let i = 0; i < fullStars; i++) {
+                stars += '&#9733;';
+            }
+            if (hasHalfStar) {
+                stars += '&#9734;';
+            }
+            for (let i = fullStars + (hasHalfStar ? 1 : 0); i < 5; i++) {
+                stars += '&#9734;';
+            }
+            
+            return stars;
+        }
+
+        function searchTutors() {
+            const subject = document.getElementById('subject').value;
+            const location = document.getElementById('location').value.toLowerCase();
+            const experience = document.getElementById('experience').value;
+            
+            filteredTutors = tutors.filter(tutor => {
+                const subjectMatch = !subject || tutor.subjects.includes(subject);
+                const locationMatch = !location || tutor.location.toLowerCase().includes(location);
+                const experienceMatch = !experience || tutor.experience >= parseInt(experience);
+                
+                return subjectMatch && locationMatch && experienceMatch;
+            });
+            
+            renderTutors(filteredTutors);
+        }
+
+        function bookTutor(tutorId) {
+            const tutor = tutors.find(t => t.id === tutorId);
+            alert(`Booking feature: Would connect to backend to book ${tutor.name} for tutoring session.`);
+        }
+
+        function viewProfile(tutorId) {
+            const tutor = tutors.find(t => t.id === tutorId);
+            alert(`Profile feature: Would show detailed profile for ${tutor.name} with full bio, qualifications, and schedule.`);
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTutors(tutors);
+        });
+    </script>
+</body>
+</html>
