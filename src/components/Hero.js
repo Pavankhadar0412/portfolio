@@ -27,97 +27,6 @@ const Hero = () => {
         gap: '2rem',
         alignItems: 'center'
       }}>
-        {/* Left Column - Content */}
-        <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
-          className="hero-left-column"
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center'
-          }}
-        >
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="hero-title"
-            style={{
-              fontSize: '5rem',
-              fontWeight: '700',
-              marginBottom: '0.5rem',
-              lineHeight: '1.1',
-              fontFamily: 'Georgia, serif',
-              color: '#000000'
-            }}
-          >
-            PAVAN<br />KHADAR
-          </motion.h1>
-
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="hero-subtitle"
-            style={{
-              fontSize: '1.2rem',
-              color: '#666666',
-              marginBottom: '2rem',
-              fontWeight: '400',
-              letterSpacing: '3px',
-              fontFamily: 'Arial, sans-serif'
-            }}
-          >
-            CYBER SECURITY & BLOCKCHAIN | FULL STACK DEVELOPER
-          </motion.h2>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="hero-description"
-            style={{
-              fontSize: '1rem',
-              color: '#333333',
-              marginBottom: '3rem',
-              lineHeight: '1.8',
-              maxWidth: '500px'
-            }}
-          >
-            Passionate about building secure, scalable applications and exploring the intersection of cybersecurity, blockchain technology, and full-stack development.
-          </motion.p>
-
-          <motion.button
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            whileHover={{ scale: 1.05, y: -5 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => window.open('https://www.linkedin.com/in/pavankhadar/', '_blank')}
-            className="hero-button"
-            style={{
-              padding: '1.2rem 2.5rem',
-              background: 'linear-gradient(135deg, #333333 0%, #000000 100%)',
-              color: '#ffffff',
-              border: 'none',
-              borderRadius: '50px',
-              fontSize: '1rem',
-              fontWeight: '600',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.8rem',
-              transition: 'all 0.3s ease',
-              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
-              width: 'fit-content'
-            }}
-          >
-            Connect on LinkedIn
-          </motion.button>
-        </motion.div>
-
         {/* Middle Column - Profile Image with 3D Effect */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
@@ -128,7 +37,8 @@ const Hero = () => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            position: 'relative'
+            position: 'relative',
+            gridColumn: '2'
           }}
         >
           <div className="profile-container" style={{
@@ -214,6 +124,98 @@ const Hero = () => {
           </motion.button>
         </motion.div>
 
+        {/* Left Column - Content */}
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          className="hero-left-column"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            gridColumn: '1'
+          }}
+        >
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="hero-title"
+            style={{
+              fontSize: '5rem',
+              fontWeight: '700',
+              marginBottom: '0.5rem',
+              lineHeight: '1.1',
+              fontFamily: 'Georgia, serif',
+              color: '#000000'
+            }}
+          >
+            PAVAN<br />KHADAR
+          </motion.h1>
+
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="hero-subtitle"
+            style={{
+              fontSize: '1.2rem',
+              color: '#666666',
+              marginBottom: '2rem',
+              fontWeight: '400',
+              letterSpacing: '3px',
+              fontFamily: 'Arial, sans-serif'
+            }}
+          >
+            CYBER SECURITY & BLOCKCHAIN | FULL STACK DEVELOPER
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="hero-description"
+            style={{
+              fontSize: '1rem',
+              color: '#333333',
+              marginBottom: '3rem',
+              lineHeight: '1.8',
+              maxWidth: '500px'
+            }}
+          >
+            Passionate about building secure, scalable applications and exploring the intersection of cybersecurity, blockchain technology, and full-stack development.
+          </motion.p>
+
+          <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            whileHover={{ scale: 1.05, y: -5 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => window.open('https://www.linkedin.com/in/pavankhadar/', '_blank')}
+            className="hero-button"
+            style={{
+              padding: '1.2rem 2.5rem',
+              background: 'linear-gradient(135deg, #333333 0%, #000000 100%)',
+              color: '#ffffff',
+              border: 'none',
+              borderRadius: '50px',
+              fontSize: '1rem',
+              fontWeight: '600',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.8rem',
+              transition: 'all 0.3s ease',
+              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
+              width: 'fit-content'
+            }}
+          >
+            Connect on LinkedIn
+          </motion.button>
+        </motion.div>
+
         {/* Right Column - Statistics */}
         <motion.div
           initial={{ opacity: 0, x: 50 }}
@@ -223,7 +225,8 @@ const Hero = () => {
           style={{
             display: 'flex',
             flexDirection: 'column',
-            gap: '2rem'
+            gap: '2rem',
+            gridColumn: '3'
           }}
         >
           {stats.map((stat, index) => (
