@@ -37,7 +37,7 @@ const Navbar = () => {
       borderBottom: isScrolled ? '1px solid rgba(0, 0, 0, 0.1)' : '1px solid rgba(0, 0, 0, 0.05)',
       transition: 'all 0.3s ease'
     }}>
-      <div style={{
+      <div className="navbar-container" style={{
         maxWidth: '1400px',
         margin: '0 auto',
         display: 'flex',

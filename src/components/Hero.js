@@ -32,13 +32,11 @@ const Hero = () => {
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
+          className="hero-left-column"
           style={{
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'center',
-            '@media (max-width: 1200px)': {
-              order: 1
-            }
+            justifyContent: 'center'
           }}
         >
           <motion.h1
@@ -125,6 +123,7 @@ const Hero = () => {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.3 }}
+          className="hero-middle-column"
           style={{
             display: 'flex',
             justifyContent: 'center',
@@ -184,6 +183,35 @@ const Hero = () => {
               }}
             />
           </div>
+          
+          {/* LinkedIn Button under profile on mobile */}
+          <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            whileHover={{ scale: 1.05, y: -5 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => window.open('https://www.linkedin.com/in/pavankhadar/', '_blank')}
+            className="hero-button-mobile"
+            style={{
+              padding: '1rem 2rem',
+              background: 'linear-gradient(135deg, #333333 0%, #000000 100%)',
+              color: '#ffffff',
+              border: 'none',
+              borderRadius: '50px',
+              fontSize: '0.9rem',
+              fontWeight: '600',
+              cursor: 'pointer',
+              display: 'none',
+              alignItems: 'center',
+              gap: '0.6rem',
+              transition: 'all 0.3s ease',
+              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
+              margin: '2rem auto 0'
+            }}
+          >
+            Connect on LinkedIn
+          </motion.button>
         </motion.div>
 
         {/* Right Column - Statistics */}
@@ -191,7 +219,7 @@ const Hero = () => {
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="stats-container"
+          className="stats-container hero-right-column"
           style={{
             display: 'flex',
             flexDirection: 'column',
