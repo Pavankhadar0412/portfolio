@@ -371,6 +371,15 @@ html {
   .navbar-title {
     font-size: 1.2rem !important;
   }
+  
+  /* Move name/content before profile image on mobile */
+  .hero-grid > div:nth-child(1) {
+    order: 1 !important;
+  }
+  
+  .hero-grid > div:nth-child(2) {
+    order: 2 !important;
+  }
 }
 
 @media (max-width: 480px) {
