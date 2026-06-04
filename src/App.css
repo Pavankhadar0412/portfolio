@@ -250,6 +250,7 @@ html {
   .hero-grid {
     grid-template-columns: 1fr !important;
     text-align: center !important;
+    padding: 0 1rem !important;
   }
   
   .hero-name-section {
@@ -262,9 +263,10 @@ html {
   
   .hero-subtitle {
     order: 2 !important;
-    font-size: 0.9rem !important;
+    font-size: 0.85rem !important;
     text-align: center !important;
-    line-height: 1.6 !important;
+    line-height: 1.5 !important;
+    padding: 0 0.5rem !important;
   }
   
   .hero-description {
@@ -288,19 +290,19 @@ html {
   }
   
   .profile-container {
-    width: 300px !important;
-    height: 300px !important;
-    margin: 0 auto !important;
+    width: 280px !important;
+    height: 280px !important;
+    margin: 0 auto 1.5rem !important;
   }
   
   .profile-image {
-    width: 250px !important;
-    height: 250px !important;
+    width: 240px !important;
+    height: 240px !important;
   }
   
   .profile-decorative {
-    width: 280px !important;
-    height: 280px !important;
+    width: 260px !important;
+    height: 260px !important;
   }
   
   .hero-title {
