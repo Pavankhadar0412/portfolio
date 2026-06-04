@@ -244,16 +244,25 @@ html {
     text-align: center !important;
   }
   
-  .hero-left-column {
-    order: 2 !important;
+  .hero-name-section {
+    order: 1 !important;
+    text-align: left !important;
   }
   
   .hero-middle-column {
-    order: 1 !important;
+    order: 2 !important;
   }
   
-  .hero-right-column {
+  .hero-subtitle {
     order: 3 !important;
+    font-size: 1rem !important;
+    text-align: center !important;
+  }
+  
+  .hero-description {
+    order: 4 !important;
+    max-width: 100% !important;
+    text-align: center !important;
   }
   
   .hero-button {
@@ -261,12 +270,18 @@ html {
   }
   
   .hero-button-mobile {
+    order: 5 !important;
     display: flex !important;
+  }
+  
+  .hero-right-column {
+    order: 6 !important;
   }
   
   .profile-container {
     width: 300px !important;
     height: 300px !important;
+    margin: 0 auto !important;
   }
   
   .profile-image {
@@ -281,14 +296,6 @@ html {
   
   .hero-title {
     font-size: 2.5rem !important;
-  }
-  
-  .hero-subtitle {
-    font-size: 1rem !important;
-  }
-  
-  .hero-description {
-    max-width: 100% !important;
   }
   
   .stats-container {
