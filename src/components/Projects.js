@@ -2,50 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 const Projects = () => {
-  const projects = [
-    {
-      title: "SecureVault - Password Manager",
-      description: "Enterprise-grade password management system with AES-256 encryption, multi-factor authentication, and secure cloud storage.",
-      technologies: ["React", "Node.js", "AES-256", "JWT", "MongoDB"],
-      github: "https://github.com/Pavankhadar0412/securevault",
-      demo: "/demos/securevault-demo.html"
-    },
-    {
-      title: "ChainGuard - Smart Contract Auditor",
-      description: "Automated smart contract security analysis tool that detects vulnerabilities, gas optimization opportunities, and compliance issues.",
-      technologies: ["Solidity", "Python", "Web3.py", "Ethers.js", "Slither"],
-      github: "https://github.com/Pavankhadar0412/chainguard",
-      demo: "/demos/chainguard-demo.html"
-    },
-    {
-      title: "DeFi Protocol - Lending Platform",
-      description: "Decentralized lending and borrowing protocol with dynamic interest rates, collateral management, and governance token integration.",
-      technologies: ["Solidity", "Hardhat", "React", "Ethers.js", "IPFS"],
-      github: "https://github.com/Pavankhadar0412/defi-protocol",
-      demo: "/demos/defi-protocol-demo.html"
-    },
-    {
-      title: "ThreatHunter - Network Security Scanner",
-      description: "Real-time network intrusion detection system with machine learning algorithms for anomaly detection and automated threat response.",
-      technologies: ["Python", "Scapy", "TensorFlow", "Elasticsearch", "Docker"],
-      github: "https://github.com/Pavankhadar0412/threathunter",
-      demo: "/demos/threathunter-demo.html"
-    },
-    {
-      title: "NFT Marketplace - Digital Assets Platform",
-      description: "Full-featured NFT marketplace with minting, trading, auction system, and royalty distribution for creators.",
-      technologies: ["Solidity", "React", "IPFS", "OpenZeppelin", "Web3.js"],
-      github: "https://github.com/Pavankhadar0412/nft-marketplace",
-      demo: "/demos/nft-marketplace-demo.html"
-    },
-    {
-      title: "CryptoAnalyzer - Blockchain Forensics",
-      description: "Advanced blockchain analysis tool for transaction tracking, wallet clustering, and suspicious activity detection.",
-      technologies: ["Python", "Web3.py", "NetworkX", "PostgreSQL", "D3.js"],
-      github: "https://github.com/Pavankhadar0412/cryptoanalyzer",
-      demo: "/demos/cryptoanalyzer-demo.html"
-    }
-  ];
+  const projects = [];
 
   return (
     <section id="projects" className="section" style={{

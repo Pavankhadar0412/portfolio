@@ -35,7 +35,6 @@ const Skills = () => {
       'REST APIs'
     ],
     'Databases': [
-      'MongoDB',
       'MySQL',
       'SQL'
     ],
