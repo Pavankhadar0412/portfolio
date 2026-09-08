@@ -2,7 +2,15 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 const Projects = () => {
-  const projects = [];
+  const projects = [
+    {
+      title: "AI Resume Screener",
+      description: "AI-powered resume screening system that analyzes resumes against job descriptions, extracts relevant skills, and helps evaluate candidate-job matching using LLM-based analysis.",
+      technologies: ["React.js", "FastAPI", "Python", "MySQL", "LLM", "JWT"],
+      github: "#",
+      demo: "https://ai-resume-screener-psi-lemon.vercel.app/"
+    }
+  ];
 
   return (
     <section id="projects" className="section" style={{
